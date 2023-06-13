@@ -1,70 +1,34 @@
-
-import { useState, useEffect } from 'react';
-
-import Moviecard from './Moviecard';
-
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
-import SearchIcon from './search.svg';
-
-const API_URL = 'http://www.omdbapi.com?apikey=99f8cabd'
-
-const movie1 = {
-        "Title": "Jurassic Park",
-        "Year": "1993",
-        "imdbID": "tt0107290",
-        "Type": "movie",
-        "Poster": "https://m.media-amazon.com/images/M/MV5BMjM2MDgxMDg0Nl5BMl5BanBnXkFtZTgwNTM2OTM5NDE@._V1_SX300.jpg"
-    }
+import Homepage from './Homepage';
+import MovieSearch from './MovieSearch';
+import Dashboard from './Dashboard';
+import searchIcon from './search.svg';
 
 const App = () => {
-    const [movies, setMovies] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const searchMovies = async (title) => {
-        const response = await fetch(`${API_URL}&s=${title}`);
-        const data = await response.json();
-
-        setMovies(data.Search);
-    }
-
-    useEffect(() => {
-        searchMovies('Jurassic Park');
-    }, []);
-
-
-
-    return (
-     <div className="app">
-        <h1>FilmaLab</h1>
-
-        <div className="search">
-         <input
-            placeholder="Search for films"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <img 
-                src={SearchIcon}
-                alt="search"
-                onClick={() => searchMovies(searchTerm)}
-                />
-        </div>
-
-        {movies?.length > 0
-            ? (
-            <div className="container">
-                {movies.map((movie) => (
-                    <Moviecard movie={movie} />
-                ))}
-            </div>
-             ) : (
-            <div className="empty">
-                <h2>No movies found!</h2>
-                </div>
-             )
-        }
-     </div>
-    );
-}
+  return (
+    <div className="app">
+      <Router>
+        <header className="app-header">
+          <Link to="/" className="app-logo">F.ilm F.low</Link>
+          <div className="search">
+            <Link to="/search">
+              <input type="text" placeholder="Search" />
+              <img src={searchIcon} alt="Search icon" />
+            </Link>
+          </div>
+        </header>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/search" element={<MovieSearch />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+          </Routes>
+        </main>
+      </Router>
+    </div>
+  );
+};
 
 export default App;

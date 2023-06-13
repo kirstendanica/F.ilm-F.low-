@@ -1,0 +1,64 @@
+.homepage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1f1f1f;
+    color: #eaeaea;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1639153697189-04bc5d043f64?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=900&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmlsbSx0ZWxldmlzaW9uLHN0cmVhbWluZ3x8fHx8fDE2ODY2NTM5MjM&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1600');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+  }
+  
+  .hero-content {
+    max-width: 900px;
+    background: rgba(31, 31, 31, 0.85);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+    color: #c0c0c0;
+  }
+  
+  .hero-cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #4c4c4c;
+    font-size: 1.4rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #ffffff;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hero-cta:hover {
+    background-color: #6f6f6f;
+    text-decoration: none;
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
