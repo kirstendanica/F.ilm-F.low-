@@ -1,59 +1,144 @@
+
+.image-wrapper {
+  width: 220px;
+  height: 360px; /* Adjust this value based on your desired image height */
+  position: relative;
+}
+
+.movie-card img {
+  width: 220px;
+  height: 360px;
+  object-fit: cover; /* Cover the container without stretching the image */
+  transition: transform 0.3s ease-in-out; /* Optional: Add a transition for a smooth zoom effect on hover */
+}
+
+.movie-card:hover img {
+  transform: scale(1.0); /* Optional: Add a zoom effect on hover */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: #f4f3f2;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  font-size: 16px;
+}
+
+.movie-card:hover .overlay {
+  opacity: 1;
+}
+
 .movie-card {
-    position: relative;
-    margin: 5px;
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 4px;
-    transition: all 0.3s;
-    background-color: #1f1f1f;
-    color: #eaeaea;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  }
-  
-  .movie-card img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s;
-    aspect-ratio: 2 / 3;
-  }
-  
-  .movie-card:hover img {
-    transform: scale(1.1);
-  }
-  
-  .movie-card .movie-card-image-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 300px;
-    background-color: #4c4c4c;
-    color: #eaeaea;
-    font-size: 1.5rem;
-  }
-  
-  .movie-card-info {
-    padding: 10px;
-  }
-  
-  .movie-card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .movie-card-date {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-  }
-  
-  .movie-card-overview {
-    font-size: 0.9rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-  }
+  width: 200px;
+  height: 400px;
+  display: flex;
+  position: relative;
+  margin: 0 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column; 
+  transition: all 0.3s ease;
+  color: #333333;
+}
+
+.movie-card h3 {
+  font-size: 0.9rem;
+  margin: 0.85rem 0;
+  line-height: 1;
+  text-align: center;
+  font-weight: 600;
+}
+
+.movie-card:hover {
+  transform: translateY(-0.9px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.movie-card-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+.movie-poster {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+  transition: transform 0.3s, z-index 0s 0.5s;
+}
+
+.movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.movie-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 10px;
+  color: #ccc;
+}
+
+.movie-release-date {
+  font-size: 16px;
+  color: #ccc;
+  margin: 0;
+}
+
+.movie-card:hover .movie-poster {
+  transform: scale(0.9);
+  z-index: 1;
+}
+
+.move-card:hover .movie-poster {
+  transform: translateY(0);
+  z-index: 2;
+}
+
+.movie-card:hover .movie-info {
+  transform: translateY(0);
+}
+
+.movie-card .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: #f4f3f2;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.movie-card:hover .overlay {
+  opacity: 1;
+}

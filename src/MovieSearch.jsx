@@ -1,97 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import './MovieSearch.css';
 import MovieCard from './Moviecard';
+import './MovieSearch.css';
 
 const MovieSearch = () => {
-  const [query, setQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
-  const [searchPerformed, setSearchPerformed] = useState(false);
+  const [mostPopularMovie, setMostPopularMovie] = useState(null);
+  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
+  const API_KEY = '23a3a3efe425378b5ba9af95915b9be8';
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const fetchPopularMovies = async () => {
-    const API_KEY = '23a3a3efe425378b5ba9af95915b9be8';
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      setMovies(data.results);
-      setTotalPages(data.total_pages);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const searchMovies = async (e, page = 1) => {
-    e.preventDefault();
-    const API_KEY = '23a3a3efe425378b5ba9af95915b9be8';
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=${page}&include_adult=false`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      setMovies(data.results);
-      setTotalPages(data.total_pages);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSearchPerformed(true);
-    }
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > totalPages) {
-      return;
-    }
-    setCurrentPage(newPage);
-    searchMovies({ preventDefault: () => {} }, newPage);
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+    );
+    const data = await response.json();
+    const shuffledMovies = shuffleArray(data.results);
+    setPopularMovies(shuffledMovies);
   };
 
   useEffect(() => {
     fetchPopularMovies();
   }, []);
 
+  const searchMovies = async (e) => {
+    e.preventDefault();
+
+    if (searchTerm) {
+      const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&query=${searchTerm}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        setMovies(data.results);
+        setMostPopularMovie(null);
+        setTotalPages(data.total_pages);
+        setSearchPerformed(true);
+      } catch (err) {
+        console.error(err);
+      }
+
+      setSearchTerm('');
+    }
+  };
+
+  const handleScroll = (direction) => {
+    const scrollContainer = document.querySelector('.movie-container');
+    const scrollAmount = 200;
+
+    if (direction === 'left') {
+      scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="search-container">
-      <h1 className="search-title">Movie Search</h1>
-      <div className="search-form-container">
-        <form className="search-form" onSubmit={searchMovies}>
-          <input
-            className="search-input"
-            type="text"
-            name="query"
-            placeholder="Search for a movie"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button className="search-button" type="submit">
-            Search
-          </button>
-        </form>
+      <h1 className="search-title">Find what you want</h1>
+      <form className="search-form" onSubmit={searchMovies}>
+        <input
+          type="text"
+          className="search-input"
+          placeholder="All you need is one word:"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button type="submit" className="search-button">
+          SEARCH
+        </button>
+      </form>
+      <div className="recommended-container">
+        <h2 className="recommended-title">
+          Welcome!
+          <br />
+          Here are some recommendations to get started...
+        </h2>
+        <button className="scroll-arrow left" onClick={() => handleScroll('left')}>
+          &lt;
+        </button>
+        <div className="movie-container">
+          {popularMovies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+        <button className="scroll-arrow right" onClick={() => handleScroll('right')}>
+          &gt;
+        </button>
       </div>
-      <div className="movie-container">
-        {searchPerformed ? (
-          movies.length > 0 ? (
-            movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
-          ) : (
-            <div className="empty">No movies found</div>
-          )
-        ) : (
-          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+      <div className="search-results-container">
+        {searchPerformed && (
+          <>
+            <h2 className="search-results-title">Search Results</h2>
+            <button className="scroll-arrow left" onClick={() => handleScroll('left')}>
+              &lt;
+            </button>
+            <div className="movie-container">
+              {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+              {!movies.length && <p className="empty">No movies found</p>}
+            </div>
+            <button className="scroll-arrow right" onClick={() => handleScroll('right')}>
+              &gt;
+            </button>
+          </>
         )}
       </div>
-      <div className="pagination">
-        <button onClick={() => handlePageChange(currentPage - 1)} className="pagination-button">
-          Previous
-        </button>
-        <span className="pagination-info">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button onClick={() => handlePageChange(currentPage + 1)} className="pagination-button">
-          Next
-        </button>
-      </div>
+      {/* Add pagination if needed */}
     </div>
   );
 };
